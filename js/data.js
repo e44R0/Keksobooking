@@ -1,7 +1,7 @@
 import { AD_QUANTITY, CHECK_TIME, APARTMENT_TYPE, APARTMENT_FEATURES, TITLE, PHOTOS, DESCRIPTION } from '../js/const.js'
 import { getRandFloat, getRandInt, getRandomArrayElement } from './utils.js'
 
-export const createAdData = (quantity) => {
+const createAdData = (quantity) => {
 
   const location = {
     lat : getRandFloat(35.65000,35.70000,5),
