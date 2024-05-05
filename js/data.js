@@ -10,7 +10,7 @@ const createAdData = (quantity) => {
 
   return {
     author :  {
-      avatar : `img/avatars/user${ `${quantity}`.padStart(3, '0') }.png`
+      avatar : `img/avatars/user${ `${quantity}`.padStart(2, '0') }.png`
     },
     location : {
       lat : location.lat,
