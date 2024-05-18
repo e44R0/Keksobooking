@@ -1,7 +1,7 @@
 import { AD_QUANTITY, CHECK_TIME, APARTMENT_TYPE, APARTMENT_FEATURES, TITLE, PHOTOS, DESCRIPTION } from '../js/const.js'
 import { getRandFloat, getRandInt, getRandomArrayElement } from './utils.js'
 
-const createAdData = (quantity) => {
+const createAdData = (id) => {
 
   const location = {
     lat : getRandFloat(35.65000,35.70000,5),
@@ -10,7 +10,7 @@ const createAdData = (quantity) => {
 
   return {
     author :  {
-      avatar : `img/avatars/user${ `${quantity}`.padStart(2, '0') }.png`
+      avatar : `img/avatars/user${ `${id}`.padStart(2, '0') }.png`
     },
     location : {
       lat : location.lat,

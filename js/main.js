@@ -1,5 +1,6 @@
 import { generateData } from '../js/data.js'
+import { renderCards } from './markup.js';
 
-console.log(
-  generateData()
-);
+const adData = generateData();
+
+renderCards(adData);
