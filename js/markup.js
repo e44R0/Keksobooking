@@ -49,8 +49,4 @@ export const renderCards = (adData) => {
   adData.forEach(renderCard);
 };
 
-// adData.forEach((ad) => renderCard(ad));
-
-// console.log(adData);
-
-console.log(document.querySelectorAll('.ad-form fieldset').length);
+// console.log(document.querySelectorAll('.ad-form fieldset').length);
