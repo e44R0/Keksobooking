@@ -17,3 +17,7 @@ export const getRandFloat = (min, max, accuracy = 1) => {
 }
 
 export const getRandomArrayElement = (array) => array[getRandInt(0, array.length - 1)];
+
+export const isEscapeKey = (evt) => {
+  return evt.key === 'Escape';
+};
