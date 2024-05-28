@@ -69,7 +69,8 @@ export const setupValidation = () => {
     pristine.addValidator(
     adForm.querySelector('#price'),
     validateAdFormPrice,
-    `Цена должна быть от ${pricePlaceholder} до 100000 ₽/ночь`
+    `Цена должна быть от ${pricePlaceholder} до 100000 ₽/ночь` 
+    //Пытался сделать поле динамическим - не получилось =(
     );
 
     typeOfHousingElement.addEventListener('change', () => {
@@ -79,13 +80,10 @@ export const setupValidation = () => {
 )
 
     capacityElement.addEventListener('change', () => {
-        // console.log('capacityElement');
-        // console.log(pricePlaceholder)
         pristine.validate();
     });
 
     roomNumberElement.addEventListener('change', () => {
-        // console.log('roomNumberElement');
         pristine.validate();
     });
 
