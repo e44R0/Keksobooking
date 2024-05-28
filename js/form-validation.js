@@ -1,81 +1,110 @@
+import { PRICE } from "./const.js";
 const adForm = document.querySelector('.ad-form');
-const pricePattern = /^[1-9]$|^[1-9][0-9]{1,5}$/;
-const titlePattern = /[-a-zа-яё,\s]{30,100}$/i;
+const pricePattern = /^[0-9]{1,6}$/;
+const titlePattern = /[-а-яa-zё,\s]{30,100}$/i;
+const capacityElement = adForm.querySelector('#capacity');
+const roomNumberElement = adForm.querySelector('#room_number');
+const priceElement = adForm.querySelector('#price');
+const typeOfHousingElement = adForm.querySelector('#type');
+const timeInElement = adForm.querySelector('#timein');
+const timeOutElement = adForm.querySelector('#timeout');
+let pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
 
-const pristine = new Pristine(adForm, {
-    classTo: 'ad-form__element',
-    errorTextParent: 'ad-form__element',
-    errorTextClass: 'ad-form__element--invalid',
-});
+const changePlaceholder = () => {
+    priceElement.setAttribute('placeholder', PRICE[typeOfHousingElement.value]);
+}
 
-Pristine.setLocale('ru');
+export const setupValidation = () => {
 
-Pristine.addMessages('ru', {
-    required: 'Поле обязательно к заполнению'
-  });
+    const pristine = new Pristine(adForm, {
+        classTo: 'ad-form__element',
+        errorTextParent: 'ad-form__element',
+        errorTextClass: 'ad-form__element--invalid',
+    });
 
-const validateAdFormTitle = (value) => {
-    return titlePattern.test(value);
-};
+    Pristine.setLocale('ru');
 
-const validateAdFormPrice = (value) => {
-    return pricePattern.test(value) && value <= 100000;
-};
+    Pristine.addMessages('ru', {
+        required: 'Поле обязательно к заполнению'
+    });
 
-const validateAdFormRooms = (value) => {
-    const countRoom = adForm.querySelector('#capacity');
-    switch (value) {
-        case '1':
-            return countRoom.value === '1';
-        case '2':
-            return countRoom.value === '1' || countRoom.value === '2';
-        case '3':
-            return countRoom.value === '1' || countRoom.value === '2' || countRoom.value === '3';
-        case '100':
-            return countRoom.value === '0';
-    }
-};
+    const validateAdFormTitle = (value) => {
+        return titlePattern.test(value);
+    };
 
-const validateAdFormCapacity = (value) => {
-    const rooms = adForm.querySelector('#room_number');
-    const countRooms = Number(rooms.value);
-    if (Number(value) !== 0) {
-        return Number(value) <= countRooms && countRooms !== 100;
-    } else {
-        return countRooms === 100;
-    }
-};
+    const validateAdFormPrice = (value) => {
+        const pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
+        return pricePlaceholder <= value && pricePattern.test(value) && value <= 100000;
+    };
 
-pristine.addValidator(
-    adForm.querySelector('#room_number'),
-    validateAdFormRooms,
-    'Неподходящее число комнат',
-);
+    const validateRoomCapacityLimits = () => {
+        const rooms = Number(roomNumberElement.value);
+        const capacity = Number(capacityElement.value);
 
-pristine.addValidator(
-    adForm.querySelector('#capacity'),
-    validateAdFormCapacity,
-    'Неподходящее число гостей',
-  );
-  
-  pristine.addValidator(
-    adForm.querySelector('#title'),
-    validateAdFormTitle,
-    'От 30 до 100 символов'
-  );
-  
-  pristine.addValidator(
+        if (capacity !== 0) {
+            return capacity <= rooms && rooms !== 100;
+        } 
+
+        return rooms === 100;
+    };
+
+    pristine.addValidator(
+        adForm.querySelector('#room_number'),
+        validateRoomCapacityLimits,
+        'Неподходящее число комнат',
+    );
+
+    pristine.addValidator(
+        adForm.querySelector('#capacity'),
+        validateRoomCapacityLimits,
+        'Неподходящее число гостей',
+    );
+
+    pristine.addValidator(
+        adForm.querySelector('#title'),
+        validateAdFormTitle,
+        'От 30 до 100 символов'
+    );
+
+    pristine.addValidator(
     adForm.querySelector('#price'),
     validateAdFormPrice,
-    'До 100000 ₽/ночь'
-  );
+    `Цена должна быть от ${pricePlaceholder} до 100000 ₽/ночь`
+    );
 
-adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const isValid = pristine.validate();
-    if (!isValid) {
-        console.log('>> Форма не валидна!');        
-    } else {
-        console.log('>> Успех!');
+    typeOfHousingElement.addEventListener('change', () => {
+        changePlaceholder();
+        pristine.validate();
     }
-})
+)
+
+    capacityElement.addEventListener('change', () => {
+        // console.log('capacityElement');
+        // console.log(pricePlaceholder)
+        pristine.validate();
+    });
+
+    roomNumberElement.addEventListener('change', () => {
+        // console.log('roomNumberElement');
+        pristine.validate();
+    });
+
+
+    timeInElement.addEventListener('change', () => {
+        timeOutElement.value = timeInElement.value;
+    });
+
+    timeOutElement.addEventListener('change', () => {
+        timeInElement.value = timeOutElement.value;
+    });
+
+    adForm.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        const isValid = pristine.validate();
+        if (!isValid) {
+            console.log('>> Форма не валидна!');        
+        } else {
+            console.log('>> Успех!');
+        }
+    });  
+};

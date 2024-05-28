@@ -1,4 +1,3 @@
-// import { generateData } from '../js/data.js';
 const mapConvas = document.querySelector('.map__canvas');
 const adTemplate = document.querySelector('#card').content.querySelector('.popup');
 const AD_TIPE = {
@@ -48,5 +47,3 @@ const renderCard = (ad) => {
 export const renderCards = (adData) => {
   adData.forEach(renderCard);
 };
-
-// console.log(document.querySelectorAll('.ad-form fieldset').length);
