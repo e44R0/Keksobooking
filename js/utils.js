@@ -21,3 +21,13 @@ export const getRandomArrayElement = (array) => array[getRandInt(0, array.length
 export const isEscapeKey = (evt) => {
   return evt.key === 'Escape';
 };
+
+export const createFeatureList = function (element,className,featuresList) {
+  const featuresListItem = element.querySelectorAll(`.${className}`);
+  featuresListItem.forEach((featuresListElement) => {
+    const isNecessary = featuresList.some((feature) => featuresListElement.classList.contains(`popup__feature--${feature}`));
+    if (!isNecessary){
+      featuresListElement.remove();
+    }
+  });
+};

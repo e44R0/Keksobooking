@@ -34,3 +34,10 @@ export const PRICE = {
   'palace': 10000,
 };
   
+export const AD_TIPE = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
