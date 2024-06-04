@@ -1,3 +1,4 @@
+import { disableSlider, enableSlider } from "../js/noUiSlider.js";
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.querySelectorAll('fieldset');
 const filterForm = document.querySelector('.map__filters');
@@ -8,6 +9,7 @@ export const disableAdForm = () => {
     adFormElements.forEach((element) => element.setAttribute('disabled', 'disabled'));
     filterForm.classList.add('ad-form--disabled');
     filterFormElements.forEach((element) => element.setAttribute('disabled', 'disabled'));
+    disableSlider();
 };
 
 export const activateAdForm = () => {
@@ -15,4 +17,5 @@ export const activateAdForm = () => {
     adFormElements.forEach((element) => element.removeAttribute('disabled'));
     filterForm.classList.remove('ad-form--disabled');
     filterFormElements.forEach((element) => element.removeAttribute('disabled'));
+    enableSlider();
 };

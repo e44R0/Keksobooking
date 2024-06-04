@@ -1,6 +1,7 @@
 import { createFeatureList } from '../js/utils.js';
 import { generateData } from '../js/data.js';
 import { AD_TIPE } from "./const.js";
+import { activateAdForm } from '../js/form.js';
 
 const adressElement = document.querySelector('#address');
 
@@ -15,7 +16,7 @@ const pinIcon = L.icon({
   iconUrl: '../img/pin.svg',
   iconSize: [52,52],
   iconAnchor: [26,52],
-})
+});
 
 const mainMarker = L.marker({
     lat: 35.6898,
@@ -27,10 +28,17 @@ const mainMarker = L.marker({
     },
 );
 
-const map = L.map('map-canvas').setView({
-    lat: 35.6898,
-    lng: 139.7539,
-}, 12);
+const map = L.map('map-canvas')
+  .on('load', () => {
+    activateAdForm();
+  })
+  .setView({
+      lat: 35.6898,
+      lng: 139.7539,
+  }, 12);
+
+  
+const markersGroup = L.layerGroup().addTo(map);
 
 L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -40,25 +48,18 @@ L.tileLayer(
   ).addTo(map);
 
 
-
 mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
   const lat = coordinates.lat.toFixed(5);
   const lng = coordinates.lng.toFixed(5);
+
   adressElement.value = `${lat}, ${lng}`;
-  // console.log(evt.target.getLatLng());
 });
 
+
 const adPoints = generateData();
-console.log(adPoints);
-
-console.log(adPoints[0].location.lat);
-console.log(adPoints[0].location.lng);
-
-
-
 
 const createAdPopup = (ad) => {
   const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -76,9 +77,7 @@ const createAdPopup = (ad) => {
   return popupElement;
 };
 
-const markersGroup = L.layerGroup().addTo(map);
-
-const createMarker = (ad) => {
+const adMarker = (ad) => {
   const {lat,lng} = ad.location;
   const adMarker = L.marker({
     lat: lat,
@@ -94,7 +93,8 @@ const createMarker = (ad) => {
     .bindPopup(createAdPopup(ad))
 };
 
-
-adPoints.forEach((ad) => {
-  createMarker(ad);
-});  
+export const renderAdPoiunts = () => {
+  adPoints.forEach((ad) => {
+    adMarker(ad);
+  });  
+};

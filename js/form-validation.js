@@ -1,4 +1,5 @@
 import { PRICE } from "./const.js";
+import { updateSliderByHouseType } from '../js/noUiSlider.js';
 
 const adForm = document.querySelector('.ad-form');
 const pricePattern = /^[0-9]{1,6}$/;
@@ -21,7 +22,6 @@ const changePlaceholder = () => {
 
 export const setupValidation = () => {
     const validateAdFormPrice = (value) => {
-        console.log("params:");
         const pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
         return pricePlaceholder <= value && pricePattern.test(value) && value <= 100000;
     };
@@ -78,15 +78,9 @@ export const setupValidation = () => {
         'От 30 до 100 символов'
     );
 
-    // pristine.addValidator(
-    //     adForm.querySelector('#price'),
-    //     validateAdFormPrice,
-    //     "Цена должна быть от ${1} до 100000 ₽/ночь"
-    //     //Пытался сделать поле динамическим - не получилось =(
-    // );
-
     typeOfHousingElement.addEventListener('change', () => {
         changePlaceholder();
+        updateSliderByHouseType(PRICE[typeOfHousingElement.value]);
         pristine.validate();
     }
 )
@@ -118,3 +112,5 @@ export const setupValidation = () => {
         }
     });  
 };
+
+
