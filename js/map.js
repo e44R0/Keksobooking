@@ -70,21 +70,22 @@ const createAdPopup = (ad) => {
   const popupElement = popupTemplate.cloneNode(true);
 
   popupElement.querySelector(".popup__avatar").src = ad.author.avatar;
-  popupElement.querySelector(".popup__title").textContent = ad.order.title;
+  popupElement.querySelector(".popup__title").textContent = ad.offer.title;
   popupElement.querySelector(".popup__text--address").textContent =
-    ad.order.address;
+    ad.offer.address;
   popupElement.querySelector(".popup__text--price span").textContent =
-    ad.order.price;
+    ad.offer.price;
   popupElement.querySelector(".popup__type").textContent =
-    AD_TIPE[ad.order.type];
+    AD_TIPE[ad.offer.type];
   popupElement.querySelector(
     ".popup__text--capacity"
-  ).textContent = `${ad.order.rooms} комнаты для ${ad.order.guests} гостей`;
+  ).textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
   popupElement.querySelector(
     ".popup__text--time"
-  ).textContent = `Заезд после ${ad.order.checkin}, выезд до ${ad.order.checkout} гостей`;
-  createFeatureList(popupElement, "popup__feature", ad.order.features);
+  ).textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout} гостей`;
+  createFeatureList(popupElement, "popup__feature", ad.offer.features || []);
 
+  // 0 || "default" -> "default"
   return popupElement;
 };
 
@@ -100,11 +101,12 @@ const adMarker = (ad) => {
     }
   );
 
-  adMarker.addTo(markersGroup).bindPopup(createAdPopup(ad));
+  adMarker.addTo(markersGroup)
+  adMarker.bindPopup(createAdPopup(ad));
 };
 
-export const renderAdPoiunts = () => {
-  adPoints.forEach((ad) => {
+export const renderAdPoiunts = (ads) => {
+  ads.forEach((ad) => {
     adMarker(ad);
   });
 };

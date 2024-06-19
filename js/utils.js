@@ -25,7 +25,7 @@ export const isEscapeKey = (evt) => {
 export const createFeatureList = function (element,className,featuresList) {
   const featuresListItem = element.querySelectorAll(`.${className}`);
   featuresListItem.forEach((featuresListElement) => {
-    const isNecessary = featuresList.some((feature) => featuresListElement.classList.contains(`popup__feature--${feature}`));
+    const isNecessary = featuresList?.some((feature) => featuresListElement.classList.contains(`popup__feature--${feature}`));
     if (!isNecessary){
       featuresListElement.remove();
     }
