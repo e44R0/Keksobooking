@@ -1,4 +1,6 @@
 import { PRICE } from "./const.js";
+import { updateSliderByHouseType } from '../js/noUiSlider.js';
+
 const adForm = document.querySelector('.ad-form');
 const pricePattern = /^[0-9]{1,6}$/;
 const titlePattern = /[-а-яa-zё,\s]{30,100}$/i;
@@ -10,11 +12,20 @@ const timeInElement = adForm.querySelector('#timein');
 const timeOutElement = adForm.querySelector('#timeout');
 let pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
 
+priceElement.setAttribute('data-pristine-price','0');
+
 const changePlaceholder = () => {
     priceElement.setAttribute('placeholder', PRICE[typeOfHousingElement.value]);
+    priceElement.setAttribute('data-pristine-price', PRICE[typeOfHousingElement.value]);
+    priceElement.setAttribute('min', PRICE[typeOfHousingElement.value]);
 }
 
 export const setupValidation = () => {
+    const validateAdFormPrice = (value) => {
+        const pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
+        return pricePlaceholder <= value && pricePattern.test(value) && value <= 100000;
+    };
+
 
     const pristine = new Pristine(adForm, {
         classTo: 'ad-form__element',
@@ -32,11 +43,6 @@ export const setupValidation = () => {
         return titlePattern.test(value);
     };
 
-    const validateAdFormPrice = (value) => {
-        const pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
-        return pricePlaceholder <= value && pricePattern.test(value) && value <= 100000;
-    };
-
     const validateRoomCapacityLimits = () => {
         const rooms = Number(roomNumberElement.value);
         const capacity = Number(capacityElement.value);
@@ -47,6 +53,12 @@ export const setupValidation = () => {
 
         return rooms === 100;
     };
+
+    pristine.addValidator(
+        priceElement,
+        validateAdFormPrice,
+        () => `Цена должна быть от ${PRICE[typeOfHousingElement.value]} до 100000 ₽/ночь`
+    );
 
     pristine.addValidator(
         adForm.querySelector('#room_number'),
@@ -66,15 +78,9 @@ export const setupValidation = () => {
         'От 30 до 100 символов'
     );
 
-    pristine.addValidator(
-    adForm.querySelector('#price'),
-    validateAdFormPrice,
-    `Цена должна быть от ${pricePlaceholder} до 100000 ₽/ночь` 
-    //Пытался сделать поле динамическим - не получилось =(
-    );
-
     typeOfHousingElement.addEventListener('change', () => {
         changePlaceholder();
+        updateSliderByHouseType(PRICE[typeOfHousingElement.value]);
         pristine.validate();
     }
 )
@@ -106,3 +112,5 @@ export const setupValidation = () => {
         }
     });  
 };
+
+

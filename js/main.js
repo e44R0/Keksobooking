@@ -1,11 +1,14 @@
-import { generateData } from '../js/data.js'
-import { renderCards } from '../js/markup.js';
-import { disableAdForm, activateAdForm } from '../js/form.js';
+import { disableAdForm,} from '../js/form.js';
 import { setupValidation } from '../js/form-validation.js';
+import { initMap, renderAdPoiunts } from  '../js/map.js';
+import { addNoUiSlider } from '../js/noUiSlider.js';
+import { getAds } from './api.js';
 
 
-const adData = generateData();
-
-renderCards(adData);
-// disableAdForm();
+disableAdForm();
+console.log('form disabled')
+initMap();
+getAds();
+// renderAdPoiunts();
+addNoUiSlider();
 setupValidation();

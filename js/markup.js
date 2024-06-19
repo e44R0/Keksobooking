@@ -1,12 +1,7 @@
+import { AD_TIPE } from "./const.js";
+
 const mapConvas = document.querySelector('.map__canvas');
 const adTemplate = document.querySelector('#card').content.querySelector('.popup');
-const AD_TIPE = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalow: 'Бунгало',
-    hotel: 'Отель',
-  };
 
 const renderCard = (ad) => {
     const adElement = adTemplate.cloneNode(true);
