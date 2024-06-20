@@ -1,5 +1,7 @@
 import { PRICE } from "./const.js";
 import { updateSliderByHouseType } from '../js/noUiSlider.js';
+import { disableSubmitButton, enableSubmitButton} from '../js/utils.js';
+import { resetMap } from '../js/map.js';
 
 const adForm = document.querySelector('.ad-form');
 const pricePattern = /^[0-9]{1,6}$/;
@@ -10,7 +12,6 @@ const priceElement = adForm.querySelector('#price');
 const typeOfHousingElement = adForm.querySelector('#type');
 const timeInElement = adForm.querySelector('#timein');
 const timeOutElement = adForm.querySelector('#timeout');
-let pricePlaceholder = Number(priceElement.getAttribute('placeholder'));
 
 priceElement.setAttribute('data-pristine-price','0');
 
@@ -102,12 +103,17 @@ export const setupValidation = () => {
         timeInElement.value = timeOutElement.value;
     });
 
+    adForm.addEventListener('reset', () => {
+        resetMap();
+      });
+
     adForm.addEventListener('submit', (evt) => {
         evt.preventDefault();
         const isValid = pristine.validate();
         if (!isValid) {
             console.log('>> Форма не валидна!');        
         } else {
+            disableSubmitButton();
             console.log('>> Успех!');
         }
     });  

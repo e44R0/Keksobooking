@@ -22,7 +22,7 @@ export const isEscapeKey = (evt) => {
   return evt.key === 'Escape';
 };
 
-export const createFeatureList = function (element,className,featuresList) {
+export const createFeatureList = function (element, className, featuresList) {
   const featuresListItem = element.querySelectorAll(`.${className}`);
   featuresListItem.forEach((featuresListElement) => {
     const isNecessary = featuresList?.some((feature) => featuresListElement.classList.contains(`popup__feature--${feature}`));
@@ -30,4 +30,24 @@ export const createFeatureList = function (element,className,featuresList) {
       featuresListElement.remove();
     }
   });
+};
+
+export const createTextContent = function (element, className, content) {
+  if (content === '') {
+    element.querySelector(`.${className}`).classList.add('visually-hidden');
+  } else {
+    element.querySelector(`.${className}`).textContent = content;
+    }
+}; 
+
+export const disableSubmitButton = () => {
+  const submitButton = document.querySelector('.ad-form__submit');
+  submitButton.setAttribute('disabled', 'disabled');
+  submitButton.textContent = 'Отправляю..';
+};
+
+export const enableSubmitButton = () => {
+  const submitButton = document.querySelector('.ad-form__submit');
+  submitButton.removeAttribute('disabled');
+  submitButton.textContent = 'Опубликовать';
 };

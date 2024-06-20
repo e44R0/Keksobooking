@@ -6,9 +6,7 @@ import { getAds } from './api.js';
 
 
 disableAdForm();
-console.log('form disabled')
 initMap();
 getAds();
-// renderAdPoiunts();
 addNoUiSlider();
 setupValidation();

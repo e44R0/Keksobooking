@@ -26,16 +26,16 @@ export const addNoUiSlider = () => {
     });
 
     sliderElement.noUiSlider.on('update', () => {
-        console.log('slider updated');
-        console.log("input:", priceElement.value, "slider:", sliderElement.noUiSlider.get());
+        // console.log('slider updated');
+        // console.log("input:", priceElement.value, "slider:", sliderElement.noUiSlider.get());
         priceElement.value = sliderElement.noUiSlider.get();
     });
     
 };
 
 priceElement.addEventListener('input', (evt)=> {
-    console.log('input updated');
-    console.log("input:", priceElement.valueAsNumber, "slider:", sliderElement.noUiSlider.get());
+    // console.log('input updated');
+    // console.log("input:", priceElement.valueAsNumber, "slider:", sliderElement.noUiSlider.get());
     sliderElement.noUiSlider.setHandle(0,evt.target.valueAsNumber,false, true);
 })
 

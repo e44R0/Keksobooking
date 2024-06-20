@@ -1,4 +1,4 @@
-import { createFeatureList } from "../js/utils.js";
+import { createFeatureList, createTextContent } from "../js/utils.js";
 import { generateData } from "../js/data.js";
 import { AD_TIPE } from "./const.js";
 import { activateAdForm, disableAdForm } from "../js/form.js";
@@ -55,8 +55,8 @@ export const initMap = () => {
 
 const pinIcon = L.icon({
   iconUrl: "../img/pin.svg",
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
 const markersGroup = L.layerGroup().addTo(map);
@@ -64,25 +64,16 @@ const markersGroup = L.layerGroup().addTo(map);
 const adPoints = generateData();
 
 const createAdPopup = (ad) => {
-  const popupTemplate = document
-    .querySelector("#card")
-    .content.querySelector(".popup");
+  const popupTemplate = document.querySelector("#card").content.querySelector(".popup");
   const popupElement = popupTemplate.cloneNode(true);
 
-  popupElement.querySelector(".popup__avatar").src = ad.author.avatar;
-  popupElement.querySelector(".popup__title").textContent = ad.offer.title;
-  popupElement.querySelector(".popup__text--address").textContent =
-    ad.offer.address;
-  popupElement.querySelector(".popup__text--price span").textContent =
-    ad.offer.price;
-  popupElement.querySelector(".popup__type").textContent =
-    AD_TIPE[ad.offer.type];
-  popupElement.querySelector(
-    ".popup__text--capacity"
-  ).textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;
-  popupElement.querySelector(
-    ".popup__text--time"
-  ).textContent = `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout} гостей`;
+  createTextContent(popupElement, 'popup__avatar', ad.author.avatar);
+  createTextContent(popupElement, 'popup__title', ad.offer.title);
+  createTextContent(popupElement, 'popup__text--address', ad.offer.address);
+  createTextContent(popupElement, 'popup__text--price span', ad.offer.price);
+  createTextContent(popupElement, 'popup__type', AD_TIPE[ad.offer.type]);
+  createTextContent(popupElement, 'popup__text--capacity', `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`);
+  createTextContent(popupElement, 'popup__text--time', `Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout} гостей`);
   createFeatureList(popupElement, "popup__feature", ad.offer.features || []);
 
   // 0 || "default" -> "default"
@@ -109,4 +100,16 @@ export const renderAdPoiunts = (ads) => {
   ads.forEach((ad) => {
     adMarker(ad);
   });
+};
+
+export const resetMap = () => {
+  mainPinMarker.setLatLng({
+    lat: 35.6898,
+    lng: 139.7539,
+  });
+  map.setView({
+    lat: 35.6898,
+    lng: 139.7539,
+  }, 12);
+  map.closePopup();
 };
