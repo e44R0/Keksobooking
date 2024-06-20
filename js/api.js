@@ -1,9 +1,11 @@
-import { renderAdPoiunts, resetMap } from "./map.js";
+import { renderAdPoiunts, resetMap } from "../js/map.js";
+import { showAlert ,enableSubmitButton } from '../js/utils.js';
+import { showMessage } from '../js/message.js';
 
 export const getAds = () => {
   fetch('https://28.javascript.htmlacademy.pro/keksobooking/data')
     .then((response) => {
-      return response.json().then();
+      return response.json();
     })
     .then((data) => {
       console.log(data)
@@ -11,23 +13,32 @@ export const getAds = () => {
     })
     .then((ads) => {renderAdPoiunts(ads)
     })
-    .catch((error) => {
-      alert('В ходе загрузки даннных возникла ошибка')
+    .catch(() => {
+      showAlert('Ошибка загрузки объявлений..');
+      // alert('В ходе загрузки даннных возникла ошибка')
       // console.log("error:", error);
       // throw new Error("err2");
     });
 };
 
-export const postAd = (adForm) => {
+export const postAd = (formData,evt) => {
   fetch ('https://28.javascript.htmlacademy.pro/keksobooking',
   {
     method: 'POST',
-    body: adForm,
+    body: formData,
   })
   .then((response) => {
     if (response.ok) {
+      showMessage('success');
+      evt.target.reset();
       resetMap();
-      alert('Объявление отправлено успешно!');
+    } else {
+      showMessage('error');
     }
+  }).catch(() => {
+    enableSubmitButton()
+      showMessage('error');
+  }).finally(()=>{
+      enableSubmitButton();
   })
 }

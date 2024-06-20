@@ -1,4 +1,4 @@
-import { createFeatureList, createTextContent } from "../js/utils.js";
+import { createFeatureList, createTextContent , createImgSrc} from "../js/utils.js";
 import { generateData } from "../js/data.js";
 import { AD_TIPE } from "./const.js";
 import { activateAdForm, disableAdForm } from "../js/form.js";
@@ -6,24 +6,25 @@ import { activateAdForm, disableAdForm } from "../js/form.js";
 const adressElement = document.querySelector("#address");
 const map = L.map("map-canvas");
 
+const mainPinIcon = L.icon({
+  iconUrl: "../img/main-pin.svg",
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const mainMarker = L.marker(
+  {
+    lat: 35.6898,
+    lng: 139.7539,
+  },
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  }
+);
+
 export const initMap = () => {
-  const mainPinIcon = L.icon({
-    iconUrl: "../img/main-pin.svg",
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
-
-  const mainMarker = L.marker(
-    {
-      lat: 35.6898,
-      lng: 139.7539,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    }
-  );
-
+  
   map
     .on("load", () => {
       console.log("form activated");
@@ -51,6 +52,8 @@ export const initMap = () => {
 
     adressElement.value = `${lat}, ${lng}`;
   });
+
+  
 };
 
 const pinIcon = L.icon({
@@ -67,7 +70,7 @@ const createAdPopup = (ad) => {
   const popupTemplate = document.querySelector("#card").content.querySelector(".popup");
   const popupElement = popupTemplate.cloneNode(true);
 
-  createTextContent(popupElement, 'popup__avatar', ad.author.avatar);
+  createImgSrc(popupElement, 'popup__avatar', ad.author.avatar);
   createTextContent(popupElement, 'popup__title', ad.offer.title);
   createTextContent(popupElement, 'popup__text--address', ad.offer.address);
   createTextContent(popupElement, 'popup__text--price span', ad.offer.price);
@@ -103,7 +106,7 @@ export const renderAdPoiunts = (ads) => {
 };
 
 export const resetMap = () => {
-  mainPinMarker.setLatLng({
+  mainMarker.setLatLng({
     lat: 35.6898,
     lng: 139.7539,
   });

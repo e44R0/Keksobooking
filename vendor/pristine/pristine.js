@@ -436,6 +436,9 @@
         Object.keys(messages).forEach(function (key, index) {
             langObj[key] = messages[key];
         });
+
+        console.log("lang", lang);
+        console.log("currentLocale", currentLocale);
     };
 
     Pristine.setLocale = function (locale) {

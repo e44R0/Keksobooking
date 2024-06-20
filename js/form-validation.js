@@ -2,6 +2,7 @@ import { PRICE } from "./const.js";
 import { updateSliderByHouseType } from '../js/noUiSlider.js';
 import { disableSubmitButton, enableSubmitButton} from '../js/utils.js';
 import { resetMap } from '../js/map.js';
+import { postAd } from "./api.js";
 
 const adForm = document.querySelector('.ad-form');
 const pricePattern = /^[0-9]{1,6}$/;
@@ -37,7 +38,8 @@ export const setupValidation = () => {
     Pristine.setLocale('ru');
 
     Pristine.addMessages('ru', {
-        required: 'Поле обязательно к заполнению'
+        required: 'Поле обязательно к заполнению',
+        default: 'Поле заполнено некорректно'
     });
 
     const validateAdFormTitle = (value) => {
@@ -83,8 +85,7 @@ export const setupValidation = () => {
         changePlaceholder();
         updateSliderByHouseType(PRICE[typeOfHousingElement.value]);
         pristine.validate();
-    }
-)
+    })
 
     capacityElement.addEventListener('change', () => {
         pristine.validate();
@@ -114,6 +115,8 @@ export const setupValidation = () => {
             console.log('>> Форма не валидна!');        
         } else {
             disableSubmitButton();
+            const formData = new FormData(evt.target);
+            postAd(formData,evt);
             console.log('>> Успех!');
         }
     });  

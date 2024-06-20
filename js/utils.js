@@ -18,8 +18,34 @@ export const getRandFloat = (min, max, accuracy = 1) => {
 
 export const getRandomArrayElement = (array) => array[getRandInt(0, array.length - 1)];
 
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'rgba(255, 255, 128, .5)';
+  alertContainer.style.fontSize = '14px';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+};
+
 export const isEscapeKey = (evt) => {
   return evt.key === 'Escape';
+};
+
+export const isEnterKey = (evt) => {
+  return evt.key === 'Enter';
 };
 
 export const createFeatureList = function (element, className, featuresList) {
@@ -38,7 +64,15 @@ export const createTextContent = function (element, className, content) {
   } else {
     element.querySelector(`.${className}`).textContent = content;
     }
-}; 
+};
+
+export const createImgSrc = function (element, className, content) {
+  if (content === '') {
+    element.querySelector(`.${className}`).classList.add('visually-hidden');
+  } else {
+    element.querySelector(`.${className}`).src = content;
+    }
+};
 
 export const disableSubmitButton = () => {
   const submitButton = document.querySelector('.ad-form__submit');
