@@ -99,7 +99,10 @@ const adMarker = (ad) => {
   adMarker.bindPopup(createAdPopup(ad));
 };
 
+const clearMarker = () => markersGroup.clearLayers();
+
 export const renderAdPoiunts = (ads) => {
+  clearMarker();
   ads.forEach((ad) => {
     adMarker(ad);
   });

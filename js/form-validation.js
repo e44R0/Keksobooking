@@ -13,6 +13,13 @@ const priceElement = adForm.querySelector('#price');
 const typeOfHousingElement = adForm.querySelector('#type');
 const timeInElement = adForm.querySelector('#timein');
 const timeOutElement = adForm.querySelector('#timeout');
+const avatarElement = adForm.querySelector('.ad-form-header__input');
+const avatarPreview = adForm.querySelector('.ad-form-header__preview').querySelector('img');
+const imageElement = adForm.querySelector('#images');
+const imagePreviewBox = adForm.querySelector('.ad-form__photo');
+const offerFormPhoto = adForm.querySelector('.ad-form__input');
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
 
 priceElement.setAttribute('data-pristine-price','0');
 
@@ -104,8 +111,42 @@ export const setupValidation = () => {
         timeInElement.value = timeOutElement.value;
     });
 
+      const isValidType = (file) => {
+        const fileName = file.name.toLowerCase();
+        return FILE_TYPES.some((it) => fileName.endsWith(it));
+      };
+      
+      const onAvatarChange = () => {
+        const file = avatarElement.files[0];
+        if (file && isValidType(file)){
+          avatarPreview.src = URL.createObjectURL(file);
+        }
+      };
+      
+      const onImageChange = () => {
+        const file = imageElement.files[0];
+      
+        if(file && isValidType(file)) {
+          imagePreviewBox.innerHTML = '';
+          const image = document.createElement('img');
+          image.src = URL.createObjectURL(file);
+          image.style.maxWidth = '100%';
+          image.style.height = 'auto';
+          imagePreviewBox.append(image);
+        }
+      };
+      
+      const resetFormData = () => {
+        imagePreviewBox.innerHTML = '';
+        avatarPreview.src = DEFAULT_AVATAR;
+      };
+
+    offerFormPhoto.addEventListener('change', onImageChange);
+    avatarElement.addEventListener('change', onAvatarChange);
+
     adForm.addEventListener('reset', () => {
         resetMap();
+        resetFormData();
       });
 
     adForm.addEventListener('submit', (evt) => {
@@ -117,7 +158,7 @@ export const setupValidation = () => {
             disableSubmitButton();
             const formData = new FormData(evt.target);
             postAd(formData,evt);
-            console.log('>> Успех!');
+            // console.log('>> Успех!');
         }
     });  
 };

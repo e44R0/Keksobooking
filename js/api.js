@@ -1,6 +1,8 @@
 import { renderAdPoiunts, resetMap } from "../js/map.js";
 import { showAlert ,enableSubmitButton } from '../js/utils.js';
 import { showMessage } from '../js/message.js';
+import { getFilteredOffers, setOnFilterChange } from './filter.js';
+import { debounce } from '../js/debounce.js';
 
 export const getAds = () => {
   fetch('https://28.javascript.htmlacademy.pro/keksobooking/data')
@@ -11,13 +13,13 @@ export const getAds = () => {
       console.log(data)
       return data;
     })
-    .then((ads) => {renderAdPoiunts(ads)
+    .then((ads) => {
+      getFilteredOffers(ads);
+      renderAdPoiunts(ads.slice(0,10));
+      setOnFilterChange(debounce(() => renderAdPoiunts(getFilteredOffers(ads))));
     })
     .catch(() => {
       showAlert('Ошибка загрузки объявлений..');
-      // alert('В ходе загрузки даннных возникла ошибка')
-      // console.log("error:", error);
-      // throw new Error("err2");
     });
 };
 
